@@ -60,7 +60,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
               ),
               Config.spaceSmall,
               // Schedule info here
-              ScheduleCard(
+              ScheduleCard(backgroundColor: Colors.grey, textColor: Colors.white
                   // appointment: widget.doctor['appointments'],
                   ),
               Config.spaceSmall,
@@ -157,12 +157,14 @@ class _AppointmentCardState extends State<AppointmentCard> {
 class ScheduleCard extends StatelessWidget {
   // const ScheduleCard({Key? key, required this.appointment}) : super(key: key);
   // final Map<String, dynamic> appointment;
-
+  final Color backgroundColor;
+  final Color textColor;
+  const ScheduleCard({required this.backgroundColor, required this.textColor});
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.grey,
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(10),
       ),
       width: double.infinity,
@@ -170,9 +172,9 @@ class ScheduleCard extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          const Icon(
+          Icon(
             Icons.calendar_today,
-            color: Colors.white,
+            color: textColor,
             size: 15,
           ),
           const SizedBox(
@@ -181,14 +183,16 @@ class ScheduleCard extends StatelessWidget {
           Text(
             // '${appointment['day']}, ${appointment['date']}',
             'Saturday, 5/6/2001',
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: textColor,
+            ),
           ),
           const SizedBox(
             width: 20,
           ),
-          const Icon(
+          Icon(
             Icons.access_alarm,
-            color: Colors.white,
+            color: textColor,
             size: 17,
           ),
           const SizedBox(
@@ -198,7 +202,9 @@ class ScheduleCard extends StatelessWidget {
               child: Text(
             // appointment['time'],
             "4:00 PM",
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(
+              color: textColor,
+            ),
           ))
         ],
       ),

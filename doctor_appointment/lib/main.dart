@@ -1,7 +1,9 @@
+import 'package:doctor_appointment/screens/booking_page.dart';
+import 'package:doctor_appointment/screens/doctor_detail.dart';
 import 'package:flutter/material.dart';
-
 import 'main_layout.dart';
 import 'screens/auth_page.dart';
+import 'screens/success_booked.dart';
 import 'utils/config.dart';
 
 void main() {
@@ -44,6 +46,9 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const AuthPage(),
         'main': (context) => const MainLayout(),
+        'doc_detail': (context) => DoctorDetail(),
+        'booking_page': (context) => BookinPage(),
+        'success_book': (context) => AppointmentBooked(),
         // 'booking_page': (context) => BookingPage(),
         // 'success_booking': (context) => const AppointmentBooked(),
       },
