@@ -1,3 +1,4 @@
+import 'package:doctor_appointment/widgets/sign_up_form.dart';
 import 'package:flutter/material.dart';
 import '../utils/config.dart';
 import '../utils/text.dart';
@@ -37,16 +38,18 @@ class _AuthPageState extends State<AuthPage> {
             ),
             Config.spaceSmall,
             Text(
-              AppText.enText['signIn_text']!,
+              isSignIn
+                  ? AppText.enText['signIn_text']!
+                  : AppText.enText['register_text']!,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
             Config.spaceSmall,
-            const LoginForm(),
+            isSignIn ? const LoginForm() :const SignUpForm(),
             Config.spaceSmall,
-            Center(
+           isSignIn? Center(
               child: TextButton(
                 onPressed: () {},
                 child: Text(
@@ -58,7 +61,7 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                 ),
               ),
-            ),
+            ):Container(),
             Spacer(),
             Center(
               child: Text(

@@ -1,7 +1,11 @@
+import 'dart:convert';
+
+import 'package:doctor_appointment/providers/dio_provider.dart';
 import 'package:doctor_appointment/utils/config.dart';
 import 'package:doctor_appointment/widgets/doctor_card.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/appointment_card.dart';
 
@@ -13,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Map<String, dynamic> user = {};
   List<Map<String, dynamic>> medCat = [
     {
       "icon": FontAwesomeIcons.userDoctor,
@@ -39,6 +44,26 @@ class _HomePageState extends State<HomePage> {
       "category": "Dental",
     },
   ];
+  Future<void> getData() async {
+    final SharedPreferences pref = await SharedPreferences.getInstance();
+    final token = pref.getString('token') ?? '';
+
+    if (token != '' && token.isNotEmpty) {
+      final response = await DioProvider().getUser(token);
+
+      if (response != null) {
+        setState(() {
+          user = json.decode(response);
+        });
+      }
+    }
+  }
+
+  void initState() {
+    getData();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Text(
-                      'Heshw',
+                      user['name'],
                       style: TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
@@ -123,7 +148,7 @@ class _HomePageState extends State<HomePage> {
                 Config.spaceSmall,
                 AppointmentCard(),
                 Config.spaceSmall,
-                 Text(
+                Text(
                   'Top Doctor',
                   style: TextStyle(
                     fontSize: 16,
@@ -132,8 +157,12 @@ class _HomePageState extends State<HomePage> {
                 ),
                 Config.spaceSmall,
                 Column(
-                  children: List.generate(10, (index) => DoctorCard(route: 'doc_detail',),)
-                ),
+                    children: List.generate(
+                  10,
+                  (index) => DoctorCard(
+                    route: 'doc_detail',
+                  ),
+                )),
               ],
             ),
           ),

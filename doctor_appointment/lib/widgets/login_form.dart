@@ -1,5 +1,9 @@
+import 'package:doctor_appointment/main.dart';
+import 'package:doctor_appointment/model/auth_model.dart';
+import 'package:doctor_appointment/providers/dio_provider.dart';
 import 'package:doctor_appointment/utils/config.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'button.dart';
 
@@ -49,7 +53,7 @@ class _LoginFormState extends State<LoginForm> {
               suffixIcon: IconButton(
                   onPressed: () {
                     setState(() {
-                      obsecurePass=!obsecurePass;
+                      obsecurePass = !obsecurePass;
                     });
                   },
                   icon: obsecurePass
@@ -64,13 +68,23 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           Config.spaceSmall,
-          Button(
-            width: double.infinity,
-            title: 'Sign In',
-            onPressed: (){
-              Navigator.pushNamed(context, 'main');
+          Consumer<AuthModel>(
+            builder: (context, auth, child) {
+              return Button(
+                width: double.infinity,
+                title: 'Sign In',
+                onPressed: () async {
+                  final token = await DioProvider().getToken(
+                      _emailController.text, _passwordController.text);
+                  if (token!=null) {
+                    auth.loginSuccess();
+                    print('Login Successfull!');
+                    MyApp.navigatorKey.currentState!.pushNamed('main');
+                  }
+                },
+                disable: false,
+              );
             },
-            disable: false,
           )
         ],
       ),
